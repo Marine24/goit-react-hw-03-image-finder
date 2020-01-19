@@ -20,7 +20,7 @@ class App extends Component {
   componentDidMount() {
     const { query, page } = this.state;
     this.getImages(query, page);
-    window.addEventListener('keydown', this.closeOnEscape);
+    window.addEventListener('keydown', this.closeModal);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -29,15 +29,16 @@ class App extends Component {
       this.getImages(query, page);
     }
     if (prevState.images !== images && images.length > 20) {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth',
-      });
+      // window.scrollTo({
+      //   top: document.documentElement.clientHeight,
+      //   behavior: 'smooth',
+      // });
+      window.scrollBy(0, window.innerHeight, 'smooth');
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.closeOnEscape);
+    window.removeEventListener('keydown', this.closeModal);
   }
 
   onSearch = query => {
@@ -65,13 +66,14 @@ class App extends Component {
 
   openModal = largeImgURL => this.setState({ isOpen: true, largeImgURL });
 
-  closeModal = () => this.setState({ isOpen: false });
-
-  closeOnEscape = e => {
-    if (e.code !== 'Escape') {
-      return;
+  closeModal = e => {
+    const { isOpen } = this.state;
+    if (e.code === 'Escape' && isOpen) {
+      this.setState({ isOpen: !isOpen });
     }
-    this.closeModal();
+    if (e.target === e.currentTarget) {
+      this.setState({ isOpen: !isOpen });
+    }
   };
 
   loadMore = () => {
