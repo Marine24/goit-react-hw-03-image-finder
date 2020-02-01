@@ -28,12 +28,11 @@ class App extends Component {
     if (prevState.query !== query || prevState.page !== page) {
       this.getImages(query, page);
     }
-    if (prevState.images !== images && images.length > 20) {
-      // window.scrollTo({
-      //   top: document.documentElement.clientHeight,
-      //   behavior: 'smooth',
-      // });
-      window.scrollBy(0, window.innerHeight, 'smooth');
+    if (prevState.images !== images && images.length > 12) {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }
 
